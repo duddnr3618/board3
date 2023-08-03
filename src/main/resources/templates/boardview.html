@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세페이지</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+	body {font-family: Arial, sans-serif;margin: 0;padding: 0;background-color: #f2f2f2;}
+
+.container {max-width: 800px; margin: 0 auto; padding: 20px;}
+
+.post { background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);}
+
+.post-title { color: #333;  margin-top: 0;}
+
+.post-author {color: #777;}
+
+.post-content {  line-height: 1.6;}
+
+hr { border: none;  border-bottom: 1px solid #ccc;  margin: 10px 0;}
+
+ /* 버튼 스타일 설정 */
+      /* 버튼 스타일 설정 */
+        .button-container {
+        display: flex;
+   	 gap: 30px; /* 버튼 사이의 간격을 10px로 설정 */
+   	 margin-top: 20px;
+        }
+
+        .button-container button {
+            background-color: #4CAF50;
+            border: none;
+            color: black; /* 버튼의 글씨 색상을 흰색으로 변경 */
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* 링크 스타일 설정 */
+        .button-container a {
+            color: white;
+            text-decoration: none;
+        }
+	
+</style>
+
+<body>
+
+<div class="container">
+    <div class="post">
+        <h1 class="post-title" th:text="${board.title}">게시글 제목 테스트</h1>
+        <p class="post-author" th:text="${board.writer}">작성자: 관리자</p>
+        <hr>
+        <p class="post-content" th:text="${board.contents}">
+            내용 테스트입니다.
+        </p>
+       <div class="button-container">
+    <a th:href="@{${board.filepath}}">업로드한 이미지 보기</a><br>
+    <button><a th:href="@{/board/modify/{id}(id=${board.id})}">수정</a></button><br>
+    <button><a th:href="@{/board/delete(id=${board.id})}">글 삭제</a></button>
+</div>
+
+    </div>
+</div>
+
+</body>
+</html>

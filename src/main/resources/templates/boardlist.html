@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>게시글 리스트 페이지</title>
+
+<style>
+    body { font-family: Arial, sans-serif; }
+    .layout {width: 600px;  margin: 0 auto; margin-top: 40px;}
+    table {border-collapse: collapse; width: 100%;}
+    table, th, td {border: 1px solid #ccc;}
+    th, td {padding: 10px;text-align: center; }
+    th { background-color: #f2f2f2; }
+    tr:nth-child(even) {  background-color: #f2f2f2; }
+    caption {  font-size: 1.2em; font-weight: bold; margin-bottom: 10px;}
+
+    /* 추가 스타일 코드 */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        padding: 5px 10px;
+        margin: 0 5px;
+        text-decoration: none;
+        color: #000;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .pagination a:hover {
+        background-color: #f2f2f2;
+    }
+
+    .pagination .current {
+        font-weight: bold;
+        color: red;
+    }
+
+    /* 추가 스타일 코드 - 검색창 */
+    .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .search-container input[type="text"] {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+
+    .search-container button {
+        padding: 5px 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="layout">
+     
+    <table>
+        <caption>게시글 리스트</caption>
+        <thead>
+            <tr>
+                <th>글 번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr th:each="board : ${list}">
+                <td th:text="${board.id}"></td>
+                <td>
+                    <a th:text="${board.title}" th:href="@{/board/view(id=${board.id})}"></a>
+                </td>
+                <td th:text="${board.writer}"></td>
+            </tr>
+            <!-- 이곳에 다른 글들을 추가하면 됩니다. -->
+        </tbody>
+    </table>
+    
+    <!-- 페이징 처리 -->
+    <div class="pagination">
+        <a th:if="${startPage > 1}" th:href="@{/board/list(page=0, searchKeyword=${param.searchKeyword})}">처음</a>
+        <a th:if="${nowPage > 0}" th:href="@{/board/list(page=${nowPage-1}, searchKeyword=${param.searchKeyword})}">이전</a>
+        <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a th:if="${page != nowPage}" th:href="@{/board/list(page=${page-1}, searchKeyword=${param.searchKeyword})}" th:text="${page}"></a>
+            <a th:if="${page == nowPage}" th:text="${page}" class="current"></a>
+        </th:block>
+        <a th:if="${nowPage < (endPage-1)}" th:href="@{/board/list(page=${nowPage+1}, searchKeyword=${param.searchKeyword})}">다음</a>
+        <a th:if="${endPage < totalPage}" th:href="@{/board/list(page=${totalPage-1}, searchKeyword=${param.searchKeyword})}">마지막</a>
+    </div>
+
+    <!-- 검색창 -->
+    <div class="search-container">
+        <form th:action="@{/board/list}" method="get">
+            <input type="text" name="searchKeyword">
+            <button type="submit">검색</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
